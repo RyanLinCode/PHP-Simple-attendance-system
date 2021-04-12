@@ -8,116 +8,11 @@
 	$time = date ("H:i:s" , mktime(date('H')+7, date('i'), date('s')));
 
 	$date = date ("Y-m-d" , mktime(date('H')+7, date('i'), date('s'), date('m'), date('d'), date('Y'))) ;
-	
+	$m = date ('m');
 	$dateup = date ("Y-m-d" , mktime(date('H')+7, date('i'), date('s'), date('m'), date('d')
 	+1, date('Y')));
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>首頁</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body onload="show_date();show_time()">
-	<div class="card">
-		
-		<div class="container">
-			<div class="col-md-1">
-			<form action="<?php $_SERVER["PHP_SELF"] ?>"  method="post" name="myForm">
-				<div class="proButton-botton">
-					<div class="proButton-text">員工：<?php echo $_SESSION['name']; ?> </div>
-					<br>
-					<button name="star" type="submit">Punch in</button>
-					<button name="end" type="submit" >Punch out</button>
-					<button name="month" type="submit">Attendance this month</button>
-					<button name="Logout" type="submit" value="true">Logout</button>
-				</div>
-			</form>
-		</div>
-		<div class="col-md-11 ">
-					<!-- 電腦顯示時鐘 -->
-					<form id="clock" runat="server" >
-						<div id = "show_date"></div>
-						<div id = "show_time"></div>
-					</form>
-			</div>
-		</div>
-			
-		<div class="col-md-12">
-			<div class="test">
-			    <?php
-				// 使用【打卡日期】排序, 查詢 card_record 資料表的所有資料
-				
-				$sql5="SELECT * FROM card_record  where emp_no='{$_SESSION['e_no']}' and card_date>='$BeginDate' and card_date<='$date' ORDER BY card_date ASC";
-				$result5=mysqli_query($conn, $sql5);
-
-				//如果查到的記錄筆數大於 0, 便使用迴圈顯示所有資料
-				if (mysqli_num_rows($result5) >0)
-				{	
-					
-					echo '<div class="text1">　　'.date('Y年m月') .'簽到表</div>';
-					echo '<div class="text">';
-					echo "<table border='1'>";
-					echo "<tr> <td>打卡日期</td><td>星期</td><td>員工名字</td><td>打卡班別</td></td><td>打卡時間</td><tr>";
-
-					$i=0;
-				  	while ($row5 = mysqli_fetch_array($result5)) 
-				  	{
-				  		if($i%2==0){
-				  			echo "<tr class='td1'> <td>{$row5['card_date']}</td><td>{$row5['card_week']}</td><td>{$row5['card_name']}</td><td>{$row5['begin_time']}</td></td><td>{$row5['end_time']}</td><tr>";
-				  		}else{
-				  			echo "<tr class='td2'> <td>{$row5['card_date']}</td><td>{$row5['card_week']}</td><td>{$row5['card_name']}</td><td>{$row5['begin_time']}</td></td><td>{$row5['end_time']}</td><tr>";
-				  		}
-				  		$i++;
-				  		
-				  	}
-					echo '</table>';
-					echo '</div>';
-				}
-
-			?>
-			</div>
-		</div>
-	</div>
-	
-	<!-- 電腦顯示時鐘 -->
-	<script language="JavaScript">
-		function show_time(){
-		　var NowDate=new Date();
-		　var h=NowDate.getHours();
-		　var m=NowDate.getUTCMinutes();
-		　var s=NowDate.getSeconds();
-		  m = checkTime(m);
-	      s = checkTime(s);　
-		　document.getElementById('show_time').innerHTML = h+':'+m+':'+s;
-		　setTimeout('show_time()',1000);
-		}
-		function checkTime(i) {
-		  if (i < 10) {
-		    i = "0" + i;
-		  }
-		  return i;
-		}
-		function show_date(){
-			var today = new Date();
-			var y=today.getFullYear();
-			var m=(today.getMonth()+1);
-			//var m=('0'+(today.getMonth()+1)).slice(-2)
-			var d=today.getDate();
-			document.getElementById('show_date').innerHTML = y+'.'+m+'.'+d;
-		}
-	</script>
-	
-
-
-
-
 <?php
-
-	
 	// echo "當月第一天".$BeginDate;
 	// echo "當月最後一天".date('Y-m-d', strtotime("$BeginDate +1 month -1 day"));
 
@@ -216,6 +111,7 @@
 	   	}
    }else if(isset($_POST['month'])){
    	header('Location: TCPDF/pdf.php');
+   	exit;
    }else if (isset($_POST['Logout']) && $_POST['Logout'] == "true") {
    	//銷毀
     unset($_SESSION['name']);
@@ -225,6 +121,142 @@
     exit;
 	}
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>首頁</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body  onload="show_date();show_time()">
+	<div class="card">
+		<div class="proButton-text">Name：<?php echo $_SESSION['name']; ?> </div>
+		<div class="proButton-right">
+			<form action="<?php $_SERVER["PHP_SELF"] ?>"  method="post" name="myForm">
+				<button name="Logout" type="submit" value="true">Logout</button>
+			</form>
+		</div>
+	
+		<div class="proButton-botton">
+			<div class="bottonleft">
+				<form action="<?php $_SERVER["PHP_SELF"] ?>"  method="post" name="myForm">
+				<button name="star" type="submit">Punch in</button>
+				<button name="end" type="submit" >Punch out</button>
+				<button name="month" type="submit">Download</button>
+			</form>
+			</div>
+			
+			<!-- 電腦顯示時鐘 -->
+			<div class="botton_right">
+				<div id="clock" runat="server" >
+					<div id = "show_date"></div>
+					<div id = "show_time"></div>
+				</div>
+			</div>
+			<div class="proSelect">
+				<form action="<?php $_SERVER["PHP_SELF"] ?>"  method="post" name="myForm">Month：
+					<select  name="year_month">
+						<option value='01'>January</option>
+						<option value='02'>February</option>
+						<option value='03'>March</option>
+						<option value='04'>April</option>
+						<option value='05'>May</option>
+						<option value='06'>June</option>
+						<option value='07'>July</option>
+						<option value='08'>August</option>
+						<option value='09'>September</option>
+						<option value='10'>October</option>
+						<option value='11'>November</option>
+						<option value='12'>December</option>
+		           </select>
+		           <button class="search" name="search" type="submit" ><img class="seaimg" src="image/magnifier.png" alt=""></button>
+				</form>
+	       </div>
+		</div>
+			
+		<div class="tables">
+		    <?php
+			// 使用【打卡日期】排序, 查詢 card_record 資料表的所有資料
+			// 
+			// $_POST['year_month']
+			// $sql5="SELECT * FROM card_record  where emp_no='{$_SESSION['e_no']}' and card_date>='$BeginDate' and card_date<='$date' ORDER BY card_date ASC";
+		    if(isset($_POST['year_month']))
+		    {
+		    	$m = $_POST['year_month'];
+		    }else{
+		    	$m = date ('m');
+		    }
+			$sql5="SELECT * FROM card_record  where emp_no='{$_SESSION['e_no']}' and MONTH(card_date) = '$m' ORDER BY card_date ASC";
+			$result5=mysqli_query($conn, $sql5);
+
+			//如果查到的記錄筆數大於 0, 便使用迴圈顯示所有資料
+			if (mysqli_num_rows($result5) >0)
+			{	
+				
+				echo '<div class="test">';
+				echo "<table border='1'>";
+				echo "<tr> <td>Date</td><td>Name</td><td>Punch in</td></td><td>Punch out</td><tr>";
+
+				$i=0;
+			  	while ($row5 = mysqli_fetch_array($result5)) 
+			  	{
+			  		if($i%2==0){
+			  			echo "<tr class='td1'> <td>{$row5['card_date']}</td><td>{$row5['card_name']}</td><td>{$row5['begin_time']}</td></td><td>{$row5['end_time']}</td><tr>";
+			  		}else{
+			  			echo "<tr class='td2'> <td>{$row5['card_date']}</td><td>{$row5['card_name']}</td><td>{$row5['begin_time']}</td></td><td>{$row5['end_time']}</td><tr>";
+			  		}
+			  		$i++;
+			  		
+			  	}
+				echo '</table>';
+				echo '</div>';
+			}else{
+				echo '<div class="test">';
+				echo "<table border='1'>";
+				echo "<tr> <td>Date</td><td>Name</td><td>Punch in</td></td><td>Punch out</td><tr>";
+				echo '</table>';
+				echo '</div>';
+			}
+
+		?>
+		</div>
+	</div>
+	
+	<!-- 電腦顯示時鐘 -->
+	<script language="JavaScript">
+		function show_time(){
+		　var NowDate=new Date();
+		　var h=NowDate.getHours();
+		　var m=NowDate.getUTCMinutes();
+		　var s=NowDate.getSeconds();
+		  m = checkTime(m);
+	      s = checkTime(s);　
+		　document.getElementById('show_time').innerHTML = h+':'+m+':'+s;
+		　setTimeout('show_time()',1000);
+		}
+		function checkTime(i) {
+		  if (i < 10) {
+		    i = "0" + i;
+		  }
+		  return i;
+		}
+		function show_date(){
+			var today = new Date();
+			var y=today.getFullYear();
+			var m=(today.getMonth()+1);
+			//var m=('0'+(today.getMonth()+1)).slice(-2)
+			var d=today.getDate();
+			document.getElementById('show_date').innerHTML = y+'.'+m+'.'+d;
+		}
+	</script>
+	
+
+
+
+
+
 
 </body>
 </html>

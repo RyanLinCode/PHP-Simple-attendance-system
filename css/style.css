@@ -227,66 +227,113 @@ button{
 
 /* card start */
 
-/* button */
-.card .proButton-botton{
-  height: 40px;
-  width: 40em;
-  padding-top:50%; 
+.card {
+  position: relative;
 }
-.card .proButton-text{
-  margin: 0 auto;
-  font-size: 35px;
+
+
+/* clock */
+
+.card #clock{
+  /* background-color: #1D65A6; */
+
+}
+.card #show_date{
   font-weight:bold;
+  text-align: center;
+  color:#20B1F2;
+  font-size: 40px;
 }
+  .card #show_time{
+  color:#20B1F2;
+  font-size: 25px;
+  text-align: center; 
+}
+
+/* button */
 .card button {
     border: none;
     background: #20B1F2;
     /* background: transparent;*/
     color: #FFFFFF;
     border-radius: 35px;
-    width: 40%;
+    width: 60%;
+    font-family: roboto, arial;
+    font-size: 15px;
+    font-weight:bold;
+    border: 1px solid #FFFFFF;
+    height: 40px;
+    z-index: 1;
+}
+.card .proButton-botton{
+  float: left;
+  padding-top:3%;
+  height: 50px;
+  width: 420px;
+  padding-bottom: 2%;
+  /*padding-top:50%; */
+}
+.card .bottonleft{
+  width: 200px;
+  float: left;
+}
+.card .botton_right{
+  width: 220px;
+  float: right;
+  padding-bottom: 10px;
+}
+
+.card .proButton-text{
+  position: absolute;
+  float: left;
+  font-size: 35px;
+  font-weight:bold;
+  z-index: 1;
+}
+.card .proButton-right{
+  float: right;
+  width: 6%;
+  z-index: 1;
+}
+.card .proButton-right button{
+    width: 90%;
+    font-size: 20px;
+    height: 50px;
+}
+.card .search{
+    border-radius: 0px;
+    background: linear-gradient(180deg,#fff 0,#FFF 80%);
+    width: 5%;
     font-family: roboto, arial;
     font-size: 20px;
     border: 1px solid #FFFFFF;
     height: 50px;
-    z-index: 1;
+}
+
+.card form{
+  
+}
+.card .proSelect{
+  width: 220px;
+  float: right;
+  font-weight:bold;
+  z-index: 1;
+}
+
+
+
+.card .seaimg{
+    height: 30px;
 }
 /* button */
 
-/* clock */
 
-.card .container{
-  margin-left:0;
-  padding-left: 10px;
-}
-.card #clock{
-  /* background-color: #1D65A6; */
-  border-radius: 15px;
-  height: 300px;
-  width: 100%;
-  margin: 0 auto;
-  padding-left: 70%;
-}
-.card #show_date{
-  font-weight:bold;
-  text-align: center;
-  color:#20B1F2;
-  font-size: 120px;
-}
-.card #show_time{
-  padding-left: 20%;
-  padding-bottom: : 300px;
-  color:#20B1F2;
-  font-size: 80px;
-  text-align: center; 
-  display: inline;
-}
 
 .card table{
-  padding-left: 10%;
+  margin:0 auto;
   font-size: 20px;
   text-align: center;
-  width: 800px;
+  width: 99%;
   background: rgb(235,135,57);
   color:#fff;
   font-weight:bold;
@@ -301,15 +348,10 @@ button{
   color:#000;
   font-weight:normal;
 }
-.text1{
-  padding-left: 46%;
-  font-size: 40px;
-  font-weight:bold;
-}
-.text{
-  padding-left: 35%;
+
+/*.card .text{
   font-size: 20px;
-}
+}*/
 
 /* card end */
 /* test menu */
@@ -321,7 +363,8 @@ button{
 　text-align:center;
 　line-height:400px;
 }
-.card .test{
+.card .tables{
+  padding-top: 200px;
   font-size: 200px;
 }
 /* test menu */
@@ -332,7 +375,5 @@ button{
 .left{
   height: 30%;
 }
-.test{
-  height: 70%;
-}
+
 /* test end */
